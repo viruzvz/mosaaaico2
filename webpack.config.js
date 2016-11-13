@@ -7,8 +7,8 @@ module.exports = {
 
   entry: {
     _css_: ['./src/css/vendors.less', './src/css/styles.less'],
-    main: './src/js/index.js',
-    vendor: 'jquery'
+    main: './src/js/index.js'
+    // vendor: 'jquery'
   },
 
   output: {
@@ -55,11 +55,11 @@ module.exports = {
 
   plugins: [
     new webpack.NamedModulesPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
-      filename: 'vendor.bundle.js'
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   minChunks: Infinity,
+    //   filename: 'vendor.bundle.js'
+    // }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false
