@@ -1,10 +1,8 @@
 var pug = require('pug')
-var path = require('path')
 var sanitize = require('sanitize-filename')
 var fs = require('fs')
 
 module.exports = function (app) {
-
   app.get('/', function (req, res, next) {
     req.url = '/index.html'
     next()
@@ -14,8 +12,8 @@ module.exports = function (app) {
     res.set('Content-Type', 'text/html')
 
     var filename = sanitize(req.params.page)
-    var htmlFile = path.join(__dirname, `../src/${filename}.html`)
-    var pugFile = path.join(__dirname, `../src/${filename}.pug`)
+    var htmlFile = `./src/${filename}.html`
+    var pugFile = `./src/${filename}.pug`
 
     if (fileExists(htmlFile)) {
       res.sendFile(htmlFile)
