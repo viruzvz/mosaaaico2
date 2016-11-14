@@ -8,8 +8,8 @@ module.exports = function (config) {
   return merge({
     output: {
       filename: isProduction ? '[name].[hash].js' : '[name].js',
-      path: isProduction ? './dist' : '/',
-      publicPath: '/'
+      path: isProduction ? './dist' : undefined,
+      publicPath: isProduction ? '/' : `http://0.0.0.0:${process.env.PORT || 8000}/`
     },
 
     module: {
