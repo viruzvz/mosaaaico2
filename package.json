@@ -27,7 +27,7 @@
     "sanitize-filename": "^1.6.1",
     "standard": "^8.5.0",
     "style-loader": "^0.13.1",
-    "stylelint": "^7.5.0",
+    "stylelint": "^7.6.0",
     "stylelint-config-standard": "^15.0.0",
     "webpack": "2.1.0-beta.27"
   }
