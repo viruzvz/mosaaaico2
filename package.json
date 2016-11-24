@@ -5,6 +5,9 @@
   "main": "config.js",
   "author": "",
   "license": "ISC",
+  "bin": {
+    "mosaaaico2": "./bin/build.js"
+  },
   "dependencies": {
     "autoprefix": "^1.0.1",
     "babel-core": "^6.18.2",
