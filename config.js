@@ -46,18 +46,9 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.NamedModulesPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false
-    })
-  ].concat([
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
-      filename: isProduction ? 'vendor.[hash].js' : 'vendor.js'
-    })
+    new webpack.NoErrorsPlugin()
+  ].concat(isProduction ? [] : [
+    new webpack.NamedModulesPlugin()
   ]),
 
   devtool: isProduction ? '' : 'eval-source-map',
