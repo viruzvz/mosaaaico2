@@ -10,7 +10,6 @@ module.exports = function (config) {
   if (config.entry.vendor) {
     conf.merge({
       plugins: [
-        // new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.[hash].js')
         new webpack.optimize.CommonsChunkPlugin({
           name: 'vendor',
           minChunks: Infinity,
