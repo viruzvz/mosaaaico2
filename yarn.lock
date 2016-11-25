@@ -1423,6 +1423,10 @@ diffie-hellman@^5.0.0:
     miller-rabin "^4.0.0"
     randombytes "^2.0.0"
 
+dlv@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/dlv/-/dlv-1.0.2.tgz#83c9209ced992af8489b688ac8aa207f2530cd1a"
+
 doctrine@^1.2.2:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-1.5.0.tgz#379dce730f6166f76cefa4e6707a159b02c5a6fa"
