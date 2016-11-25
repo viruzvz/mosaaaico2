@@ -21,13 +21,17 @@ const styles = _.fromPairs(glob.sync('./src/css/*.{less,css}').map(_ => {
   return [path.basename(_).replace(/less$/, 'css'), _]
 }))
 
+const scripts = _.fromPairs(glob.sync('./src/js/*.js').map(_ => {
+  return [path.basename(_), _]
+}))
+
 // setar todos os htmls de estilos em src
 const htmls = glob.sync('./src/*.{html,pug}').map(template => {
   const filename = path.basename(template).replace(/\.(html|pug)$/, '')
   return new HtmlWebpackPlugin({
     template: template,
     filename: filename + '.html',
-    chunks: ['main', filename].concat(Object.keys(styles))
+    chunks: _.uniq(['main.js', 'main.css', 'vendors.css', filename + '.js', filename + '.css'])
   })
 })
 
@@ -38,7 +42,7 @@ module.exports = {
     publicPath: isProduction ? '/' : `http://0.0.0.0:${port}/`
   },
 
-  entry: styles,
+  entry: _.assign({}, styles, scripts),
 
   module: {
     rules: [{
