@@ -21,6 +21,7 @@ const styles = _.fromPairs(glob.sync('./src/css/*.{less,css}').map(_ => {
   return [path.basename(_).replace(/less$/, 'css'), _]
 }))
 
+// setar todos os arquivos de scripts em src/js
 const scripts = _.fromPairs(glob.sync('./src/js/*.js').map(_ => {
   return [path.basename(_), _]
 }))
@@ -31,9 +32,31 @@ const htmls = glob.sync('./src/*.{html,pug}').map(template => {
   return new HtmlWebpackPlugin({
     template: template,
     filename: filename + '.html',
-    chunks: _.uniq(['main.js', 'main.css', 'vendors.css', filename + '.js', filename + '.css'])
+    chunks: [
+      'main.js', 'main.css',
+      'vendors.js', 'vendors.css',
+      filename + '.js', filename + '.css'
+    ]
   })
 })
+
+const plugins = [new webpack.NoErrorsPlugin()].concat(htmls)
+
+if (isProduction) {
+  plugins.push(new ExtractTextPlugin('css/[name].[contenthash].css'))
+} else {
+  plugins.push(new webpack.NamedModulesPlugin())
+}
+
+if (scripts['vendors.js']) {
+  plugins.push(
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendors.js',
+      minChunks: Infinity,
+      filename: 'js/vendors.[hash].js'
+    })
+  )
+}
 
 module.exports = {
   output: {
@@ -66,13 +89,7 @@ module.exports = {
     }]
   },
 
-  plugins: [
-    new webpack.NoErrorsPlugin()
-  ].concat(htmls).concat(isProduction ? [
-    new ExtractTextPlugin('css/[name].[contenthash].css')
-  ] : [
-    new webpack.NamedModulesPlugin()
-  ]),
+  plugins,
 
   devtool: isProduction ? '' : 'eval-source-map',
 
