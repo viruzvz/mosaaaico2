@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const ENV = process.env.NODE_ENV || 'development'
+const port = Number(process.env.PORT) || 8000
 const isProduction = ENV === 'production'
 
 const lessLoaders = [
@@ -16,15 +17,17 @@ const lessLoaders = [
 ]
 
 // setar todos os arquivos de estilos em src/css
-const styles = glob.sync('./src/css/*.{less,css}').map(_ => {
+const styles = _.fromPairs(glob.sync('./src/css/*.{less,css}').map(_ => {
   return [path.basename(_).replace(/less$/, 'css'), _]
-})
+}))
 
 // setar todos os htmls de estilos em src
-const htmls = glob.sync('./src/*.{html,pug}').map(_ => {
+const htmls = glob.sync('./src/*.{html,pug}').map(template => {
+  const filename = path.basename(template).replace(/\.(html|pug)$/, '')
   return new HtmlWebpackPlugin({
-    template: _,
-    filename: path.basename(_).replace(/pug$/, 'html')
+    template: template,
+    filename: filename + '.html',
+    chunks: ['main', filename].concat(Object.keys(styles))
   })
 })
 
@@ -32,10 +35,10 @@ module.exports = {
   output: {
     filename: isProduction ? 'js/[name].[hash].js' : 'js/[name].js',
     path: isProduction ? './dist' : void 0,
-    publicPath: isProduction ? '/' : `http://0.0.0.0:${process.env.PORT || 8000}/`
+    publicPath: isProduction ? '/' : `http://0.0.0.0:${port}/`
   },
 
-  entry: _.fromPairs(styles),
+  entry: styles,
 
   module: {
     rules: [{
@@ -73,7 +76,7 @@ module.exports = {
     contentBase: './src',
     publicPath: '/',
     compress: true,
-    port: Number(process.env.PORT) || 8000,
+    port,
     setup: function (app) {
       require('./dev/pug-server')(app)
     }
