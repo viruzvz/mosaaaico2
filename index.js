@@ -13,7 +13,7 @@ module.exports = function (config) {
         new webpack.optimize.CommonsChunkPlugin({
           name: 'vendor',
           minChunks: Infinity,
-          filename: 'vendor.[hash].js'
+          filename: 'js/vendor.[hash].js'
         })
       ]
     })

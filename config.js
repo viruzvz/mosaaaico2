@@ -37,7 +37,7 @@ const htmls = glob.sync('./src/*.{html,pug}').map(_ => {
 
 module.exports = {
   output: {
-    filename: isProduction ? '[name].[hash].js' : '[name].js',
+    filename: isProduction ? 'js/[name].[hash].js' : 'js/[name].js',
     path: isProduction ? './dist' : void 0,
     publicPath: isProduction ? '/' : `http://0.0.0.0:${process.env.PORT || 8000}/`
   },
@@ -62,7 +62,7 @@ module.exports = {
       loader: 'pug-loader'
     }, {
       test: /\.(svg|woff|ttf|eot|woff2)(\?.*)?$/i,
-      loader: 'file-loader?name=fonts/[name]_[hash:base64:5].[ext]'
+      loader: 'file-loader?name=css/fonts/[name]_[hash:base64:5].[ext]'
     }]
   },
 
