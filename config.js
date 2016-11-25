@@ -8,26 +8,19 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ENV = process.env.NODE_ENV || 'development'
 const isProduction = ENV === 'production'
 
-const lessLoaders = [{
-  loader: 'style-loader'
-}, {
-  loader: 'css-loader',
-  query: {
-    sourceMap: true
-  }
-}, {
-  loader: 'postcss-loader'
-}, {
-  loader: 'less-loader',
-  query: {
-    sourceMap: true
-  }
-}]
+const lessLoaders = [
+  { loader: 'style-loader' },
+  { loader: 'css-loader', query: { sourceMap: true } },
+  { loader: 'postcss-loader' },
+  { loader: 'less-loader', query: { sourceMap: true } }
+]
 
+// setar todos os arquivos de estilos em src/css
 const styles = glob.sync('./src/css/*.{less,css}').map(_ => {
   return [path.basename(_).replace(/less$/, 'css'), _]
 })
 
+// setar todos os htmls de estilos em src
 const htmls = glob.sync('./src/*.{html,pug}').map(_ => {
   return new HtmlWebpackPlugin({
     template: _,
