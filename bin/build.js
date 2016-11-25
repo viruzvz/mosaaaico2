@@ -2,8 +2,15 @@
 
 var spawn = require('cross-spawn')
 var rimraf = require('rimraf')
+var path = require('path')
+var fs = require('fs')
 var script = process.argv[2]
-// var args = process.argv.slice(3)
+
+var appDirectory = fs.realpathSync(process.cwd())
+var builderDirectory = fs.realpathSync(__dirname)
+
+const config = fileExists(resolveApp('webpack.config.js'))
+  ? [] : ['--config', path.resolve(builderDirectory, '../default.js')]
 
 var result
 switch (script) {
@@ -12,7 +19,7 @@ switch (script) {
     rimraf.sync('./dist')
     result = spawn.sync(
       './node_modules/webpack/bin/webpack.js',
-      ['-p', '--progress'],
+      ['-p', '--progress'].concat(config),
       { stdio: 'inherit' }
     )
     rimraf.sync('./dist/js/*.css.*.js')
@@ -23,7 +30,7 @@ switch (script) {
     process.env.NODE_ENV = 'development'
     result = spawn.sync(
       './node_modules/webpack-dev-server/bin/webpack-dev-server.js',
-      ['--inline', '--hot', '--progress'],
+      ['--inline', '--hot', '--progress'].concat(config),
       { stdio: 'inherit' }
     )
     process.exit(result.status)
@@ -35,7 +42,15 @@ switch (script) {
     break
 }
 
-// var appDirectory = fs.realpathSync(process.cwd())
-// function resolveApp (relativePath) {
-//   return path.resolve(appDirectory, relativePath)
-// }
+function resolveApp (relativePath) {
+  return path.resolve(appDirectory, relativePath)
+}
+
+function fileExists (filePath) {
+  try {
+    fs.accessSync(filePath, fs.constants.F_OK)
+    return true
+  } catch (e) {
+    return false
+  }
+}
