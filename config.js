@@ -73,6 +73,9 @@ module.exports = {
     contentBase: './src',
     publicPath: '/',
     compress: true,
-    port: Number(process.env.PORT) || 8000
+    port: Number(process.env.PORT) || 8000,
+    setup: function (app) {
+      require('./dev/pug-server')(app)
+    }
   }
 }
