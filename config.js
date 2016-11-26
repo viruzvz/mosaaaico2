@@ -98,6 +98,7 @@ module.exports = {
     publicPath: '/',
     compress: true,
     port,
+    host: '0.0.0.0',
     setup: function (app) {
       require('./dev/pug-server')(app)
     }
