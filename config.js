@@ -1,5 +1,6 @@
 const webpack = require('webpack')
 const glob = require('glob')
+const os = require('os')
 const path = require('path')
 const _ = require('lodash')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -62,7 +63,7 @@ module.exports = {
   output: {
     filename: isProduction ? 'js/[name].[hash].js' : 'js/[name].js',
     path: isProduction ? './dist' : void 0,
-    publicPath: isProduction ? '/' : `http://localhost:${port}/`
+    publicPath: isProduction ? '/' : `http://${os.hostname()}:${port}/`
   },
 
   entry: _.assign({}, styles, scripts),
@@ -98,7 +99,6 @@ module.exports = {
     publicPath: '/',
     compress: true,
     port,
-    host: '0.0.0.0',
     setup: function (app) {
       require('./dev/pug-server')(app)
     }
