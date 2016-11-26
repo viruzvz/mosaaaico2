@@ -8,6 +8,9 @@
   "bin": {
     "mosaaaico2": "./bin/build.js"
   },
+  "scripts": {
+    "test": "standard"
+  },
   "dependencies": {
     "autoprefixer": "^6.5.3",
     "babel-core": "^6.18.2",
