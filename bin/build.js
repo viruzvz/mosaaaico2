@@ -5,13 +5,14 @@ var rimraf = require('rimraf')
 var path = require('path')
 var fs = require('fs')
 var script = process.argv[2]
-var opt = process.argv[3]
+var isPublic = process.argv[3] === 'public'
 
 var appDirectory = fs.realpathSync(process.cwd())
 var builderDirectory = fs.realpathSync(__dirname)
 
-let config = fileExists(resolveApp('webpack.config.js'))
+var config = fileExists(resolveApp('webpack.config.js'))
   ? [] : ['--config', path.resolve(builderDirectory, '../default.js')]
+config = config.concat(['--host', (isPublic ? '0.0.0.0' : 'localhost')])
 
 var result
 switch (script) {
@@ -28,9 +29,6 @@ switch (script) {
     break
 
   case 'dev':
-    if (opt === 'public') {
-      config = config.concat(['--host', '0.0.0.0'])
-    }
     process.env.NODE_ENV = 'development'
     result = spawn.sync(
       './node_modules/webpack-dev-server/bin/webpack-dev-server.js',

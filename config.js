@@ -63,7 +63,8 @@ module.exports = {
   output: {
     filename: isProduction ? 'js/[name].[hash].js' : 'js/[name].js',
     path: isProduction ? './dist' : void 0,
-    publicPath: isProduction ? '/' : `http://${os.hostname()}:${port}/`
+    // publicPath: isProduction ? '/' : `http://${os.hostname()}:${port}/`
+    publicPath: isProduction ? '/' : `http://localhost:${port}/`
   },
 
   entry: _.assign({}, styles, scripts),
