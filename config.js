@@ -60,7 +60,7 @@ if (isProduction) {
     ]))
   }
 } else {
-  plugins.push(new webpack.NamedModulesPlugin())
+  // plugins.push(new webpack.NamedModulesPlugin())
 }
 
 if (scripts['js/vendors']) {
@@ -119,10 +119,6 @@ module.exports = {
   devServer: {
     contentBase: './src',
     publicPath: '/',
-    compress: true,
-    port,
-    setup: function (app) {
-      require('./dev/pug-server')(app)
-    }
+    port
   }
 }
