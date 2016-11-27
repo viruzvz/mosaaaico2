@@ -19,9 +19,6 @@ const lessLoaders = [
   'postcss',
   'less?sourceMap'
 ]
-const less = isProduction
-  ? { test: /\.(less|css)$/, loader: ExtractTextPlugin.extract(lessLoaders.slice(1)) }
-  : { test: /\.(less|css)$/, loaders: lessLoaders }
 
 // setar todos os arquivos de estilos em src/css
 const styles = _.fromPairs(glob.sync('./src/css/*.{less,css}').map(_ => {
@@ -81,15 +78,18 @@ module.exports = {
     filename: '[name].[hash:5].js',
     path: isProduction ? './dist' : void 0,
     // publicPath: isProduction ? '/' : `http://${os.hostname()}:${port}/`
-    publicPath: isProduction ? '/' : `http://localhost:${port}/`
-    // hotUpdateMainFilename: '[hash]/update.json',
-    // hotUpdateChunkFilename: '[hash]/js/[id].update.js'
+    publicPath: isProduction ? '/' : `http://localhost:${port}/`,
+    hotUpdateMainFilename: '[hash]/update.json',
+    hotUpdateChunkFilename: '[hash]/js/[id].update.js'
   },
 
   entry: _.assign({}, styles, scripts),
 
   module: {
-    loaders: [less, {
+    loaders: [{
+      test: /\.(less|css)$/,
+      loader: isProduction ? ExtractTextPlugin.extract(lessLoaders.slice(1)) : lessLoaders.join('!')
+    }, {
       test: /\.json$/,
       loader: 'json'
     }, {
@@ -99,6 +99,14 @@ module.exports = {
       test: /\.(svg|woff|ttf|eot|woff2)(\?.*)?$/i,
       loader: 'file?name=css/fonts/[name]_[hash:base64:5].[ext]'
     }]
+  },
+
+  postcss: function (ctx) {
+    return [
+      require('autoprefixer')({
+        browsers: ['last 3 version', 'ie >= 10']
+      })
+    ]
   },
 
   // ainda não é possível importar .less direito pelo mainField
