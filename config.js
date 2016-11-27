@@ -71,9 +71,6 @@ if (scripts['js/vendors']) {
   )
 }
 
-
-console.log(_.assign({}, styles, scripts))
-
 module.exports = {
   output: {
     filename: '[name].[hash:5].js',
