@@ -32,7 +32,7 @@ switch (script) {
     process.env.NODE_ENV = 'development'
     result = spawn.sync(
       './node_modules/webpack-dev-server/bin/webpack-dev-server.js',
-      ['--inline', '--hot', '--progress'].concat(config),
+      ['--inline', '--hot', '--progress', '--colors'].concat(config),
       { stdio: 'inherit' }
     )
     process.exit(result.status)
