@@ -2,8 +2,10 @@ const webpack = require('webpack')
 const glob = require('glob')
 const path = require('path')
 const _ = require('lodash')
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const ENV = process.env.NODE_ENV || 'development'
 const port = Number(process.env.PORT) || 8000
