@@ -14,10 +14,10 @@ const port = Number(process.env.PORT) || 8000
 const isProduction = ENV === 'production'
 
 const lessLoaders = [
-  { loader: 'style-loader' },
-  { loader: 'css-loader', query: { sourceMap: true } },
-  { loader: 'postcss-loader' },
-  { loader: 'less-loader', query: { sourceMap: true } }
+  'style',
+  'css?sourceMap',
+  'postcss',
+  'less?sourceMap'
 ]
 
 // setar todos os arquivos de estilos em src/css
@@ -86,21 +86,27 @@ module.exports = {
   entry: _.assign({}, styles, scripts),
 
   module: {
-    rules: [{
+    loaders: [{
       test: /\.(less|css)$/,
-      loaders: isProduction
-        ? ExtractTextPlugin.extract({ loader: lessLoaders.slice(1) })
-        : lessLoaders
+      loader: isProduction ? ExtractTextPlugin.extract(lessLoaders.slice(1)) : lessLoaders.join('!')
     }, {
       test: /\.json$/,
-      loader: 'json-loader'
+      loader: 'json'
     }, {
       test: /\.(pug|jade)$/,
-      loader: 'pug-loader?pretty'
+      loader: 'pug?pretty'
     }, {
       test: /\.(svg|woff|ttf|eot|woff2)(\?.*)?$/i,
-      loader: 'file-loader?name=css/fonts/[name]_[hash:base64:5].[ext]'
+      loader: 'file?name=css/fonts/[name]_[hash:base64:5].[ext]'
     }]
+  },
+
+  postcss: function (ctx) {
+    return [
+      require('autoprefixer')({
+        browsers: ['last 3 version', 'ie >= 10']
+      })
+    ]
   },
 
   // ainda não é possível importar .less direito pelo mainField
