@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const glob = require('glob')
 const path = require('path')
 const _ = require('lodash')
+const utils = require('./utils')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -46,9 +47,12 @@ const plugins = [new webpack.NoErrorsPlugin()].concat(htmls)
 
 if (isProduction) {
   plugins.push(new ExtractTextPlugin('[name].[contenthash:5].css'))
-  plugins.push(new CopyWebpackPlugin([
-    { from: './src/assets', to: 'assets' }
-  ]))
+
+  if (utils.fileExists('./src/assets')) {
+    plugins.push(new CopyWebpackPlugin([
+      { from: './src/assets', to: 'assets' }
+    ]))
+  }
 } else {
   plugins.push(new webpack.NamedModulesPlugin())
 }
@@ -88,7 +92,7 @@ module.exports = {
       loader: 'json-loader'
     }, {
       test: /\.(pug|jade)$/,
-      loader: 'pug-loader'
+      loader: 'pug-loader?pretty'
     }, {
       test: /\.(svg|woff|ttf|eot|woff2)(\?.*)?$/i,
       loader: 'file-loader?name=css/fonts/[name]_[hash:base64:5].[ext]'

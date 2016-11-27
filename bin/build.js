@@ -4,13 +4,13 @@ var spawn = require('cross-spawn')
 var rimraf = require('rimraf')
 var path = require('path')
 var fs = require('fs')
+var utils = require('../utils')
 var script = process.argv[2]
 // var isPublic = process.argv[3] === 'public'
 
-var appDirectory = fs.realpathSync(process.cwd())
 var builderDirectory = fs.realpathSync(__dirname)
 
-var config = fileExists(resolveApp('webpack.config.js'))
+var config = utils.fileExists(utils.resolveApp('webpack.config.js'))
   ? [] : ['--config', path.resolve(builderDirectory, '../default.js')]
 // config = ['--host', (isPublic ? '0.0.0.0' : 'localhost')].concat(config)
 
@@ -44,15 +44,3 @@ switch (script) {
     break
 }
 
-function resolveApp (relativePath) {
-  return path.resolve(appDirectory, relativePath)
-}
-
-function fileExists (filePath) {
-  try {
-    fs.accessSync(filePath, fs.constants.F_OK)
-    return true
-  } catch (e) {
-    return false
-  }
-}
