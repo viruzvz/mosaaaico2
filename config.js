@@ -19,12 +19,12 @@ const lessLoaders = [
 
 // setar todos os arquivos de estilos em src/css
 const styles = _.fromPairs(glob.sync('./src/css/*.{less,css}').map(_ => {
-  return [path.basename(_).replace(/less$/, 'css'), _]
+  return ['css/' + path.basename(_.replace(/less$/, 'css'), '.css'), _]
 }))
 
 // setar todos os arquivos de scripts em src/js
 const scripts = _.fromPairs(glob.sync('./src/js/*.js').map(_ => {
-  return [path.basename(_), _]
+  return ['js/' + path.basename(_, '.js'), _]
 }))
 
 // setar todos os htmls de estilos em src
@@ -34,9 +34,9 @@ const htmls = glob.sync('./src/*.{html,pug}').map(template => {
     template: template,
     filename: filename + '.html',
     chunks: [
-      'main.js', 'main.css',
-      'vendors.js', 'vendors.css',
-      filename + '.js', filename + '.css'
+      'js/main', 'css/main',
+      'js/vendors', 'css/vendors',
+      'js/' + filename, 'css/' + filename
     ]
   })
 })
@@ -44,24 +44,27 @@ const htmls = glob.sync('./src/*.{html,pug}').map(template => {
 const plugins = [new webpack.NoErrorsPlugin()].concat(htmls)
 
 if (isProduction) {
-  plugins.push(new ExtractTextPlugin('css/[name].[contenthash].css'))
+  plugins.push(new ExtractTextPlugin('[name].[contenthash:5].css'))
+  plugins.push(new CopyWebpackPlugin([
+    { from: './src/assets', to: 'assets' }
+  ]))
 } else {
   plugins.push(new webpack.NamedModulesPlugin())
 }
 
-if (scripts['vendors.js']) {
+if (scripts['js/vendors']) {
   plugins.push(
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendors.js',
+      name: 'js/vendors',
       minChunks: Infinity,
-      filename: 'js/vendors.[hash].js'
+      filename: 'js/vendors.[hash:5].js'
     })
   )
 }
 
 module.exports = {
   output: {
-    filename: isProduction ? 'js/[name].[hash].js' : 'js/[name].js',
+    filename: '[name].[hash:5].js',
     path: isProduction ? './dist' : void 0,
     // publicPath: isProduction ? '/' : `http://${os.hostname()}:${port}/`
     publicPath: isProduction ? '/' : `http://localhost:${port}/`

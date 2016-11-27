@@ -24,7 +24,7 @@ switch (script) {
       ['-p', '--progress'].concat(config),
       { stdio: 'inherit' }
     )
-    rimraf.sync('./dist/js/*.css.*.js')
+    rimraf.sync('./dist/css/*.js')
     process.exit(result.status)
     break
 
