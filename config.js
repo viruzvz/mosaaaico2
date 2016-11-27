@@ -1,6 +1,5 @@
 const webpack = require('webpack')
 const glob = require('glob')
-const os = require('os')
 const path = require('path')
 const _ = require('lodash')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
