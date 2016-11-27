@@ -78,7 +78,9 @@ module.exports = {
     filename: '[name].[hash:5].js',
     path: isProduction ? './dist' : void 0,
     // publicPath: isProduction ? '/' : `http://${os.hostname()}:${port}/`
-    publicPath: isProduction ? '/' : `http://localhost:${port}/`
+    publicPath: isProduction ? '/' : `http://localhost:${port}/`,
+    hotUpdateMainFilename: '[hash]/update.json',
+    hotUpdateChunkFilename: '[hash]/js/[id].update.js'
   },
 
   entry: _.assign({}, styles, scripts),
