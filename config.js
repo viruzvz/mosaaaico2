@@ -86,10 +86,10 @@ module.exports = {
   entry: _.assign({}, styles, scripts),
 
   module: {
-    rules: [{
+    loaders: [{
       test: /\.(less|css)$/,
       loaders: isProduction
-        ? ExtractTextPlugin.extract({ loader: lessLoaders.slice(1) })
+        ? ExtractTextPlugin.extract('style-loader', lessLoaders.slice(1))
         : lessLoaders
     }, {
       test: /\.json$/,
