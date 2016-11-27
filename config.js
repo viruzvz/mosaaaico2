@@ -81,7 +81,7 @@ module.exports = {
     rules: [{
       test: /\.(less|css)$/,
       loaders: isProduction
-        ? ExtractTextPlugin.extract({ loader: ['css-loader', 'postcss-loader', 'less-loader'] })
+        ? ExtractTextPlugin.extract({ loader: lessLoaders.slice(1) })
         : lessLoaders
     }, {
       test: /\.jsx?$/,
