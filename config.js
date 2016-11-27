@@ -3,6 +3,7 @@ const glob = require('glob')
 const path = require('path')
 const _ = require('lodash')
 const utils = require('./utils')
+const FilterStyleStubs = require('./filterStyleStubs.js')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -51,6 +52,7 @@ const plugins = [new webpack.NoErrorsPlugin()].concat(htmls)
 
 if (isProduction) {
   plugins.push(new ExtractTextPlugin('[name].[contenthash:5].css'))
+  plugins.push(new FilterStyleStubs())
 
   if (utils.fileExists('./src/assets')) {
     plugins.push(new CopyWebpackPlugin([
