@@ -103,6 +103,11 @@ module.exports = {
     }]
   },
 
+  // ainda não é possível importar .less direito pelo mainField
+  // resolve: {
+  //   mainFields: ['less', 'main']
+  // },
+
   plugins,
 
   devtool: isProduction ? '' : 'eval-source-map',
