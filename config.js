@@ -14,11 +14,14 @@ const port = Number(process.env.PORT) || 8000
 const isProduction = ENV === 'production'
 
 const lessLoaders = [
-  { loader: 'style-loader' },
-  { loader: 'css-loader', query: { sourceMap: true } },
-  { loader: 'postcss-loader' },
-  { loader: 'less-loader', query: { sourceMap: true } }
+  'style',
+  'css?sourceMap',
+  'postcss',
+  'less?sourceMap'
 ]
+const less = isProduction
+  ? { test: /\.(less|css)$/, loader: ExtractTextPlugin.extract(lessLoaders.slice(1)) }
+  : { test: /\.(less|css)$/, loaders: lessLoaders }
 
 // setar todos os arquivos de estilos em src/css
 const styles = _.fromPairs(glob.sync('./src/css/*.{less,css}').map(_ => {
@@ -78,28 +81,23 @@ module.exports = {
     filename: '[name].[hash:5].js',
     path: isProduction ? './dist' : void 0,
     // publicPath: isProduction ? '/' : `http://${os.hostname()}:${port}/`
-    publicPath: isProduction ? '/' : `http://localhost:${port}/`,
-    hotUpdateMainFilename: '[hash]/update.json',
-    hotUpdateChunkFilename: '[hash]/js/[id].update.js'
+    publicPath: isProduction ? '/' : `http://localhost:${port}/`
+    // hotUpdateMainFilename: '[hash]/update.json',
+    // hotUpdateChunkFilename: '[hash]/js/[id].update.js'
   },
 
   entry: _.assign({}, styles, scripts),
 
   module: {
-    loaders: [{
-      test: /\.(less|css)$/,
-      loaders: isProduction
-        ? ExtractTextPlugin.extract('style-loader', lessLoaders.slice(1))
-        : lessLoaders
-    }, {
+    loaders: [less, {
       test: /\.json$/,
-      loader: 'json-loader'
+      loader: 'json'
     }, {
       test: /\.(pug|jade)$/,
-      loader: 'pug-loader?pretty'
+      loader: 'pug?pretty'
     }, {
       test: /\.(svg|woff|ttf|eot|woff2)(\?.*)?$/i,
-      loader: 'file-loader?name=css/fonts/[name]_[hash:base64:5].[ext]'
+      loader: 'file?name=css/fonts/[name]_[hash:base64:5].[ext]'
     }]
   },
 
