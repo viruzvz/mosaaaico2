@@ -32,14 +32,18 @@ const scripts = _.fromPairs(glob.sync('./src/js/*.js').map(_ => {
 // setar todos os htmls de estilos em src
 const htmls = glob.sync('./src/*.{html,pug}').map(template => {
   const filename = path.basename(template).replace(/\.(html|pug)$/, '')
+  const chunks = [
+    'js/vendors', 'css/vendors',
+    'js/main', 'css/main',
+    'js/' + filename, 'css/' + filename
+  ]
   return new HtmlWebpackPlugin({
     template: template,
     filename: filename + '.html',
-    chunks: [
-      'js/main', 'css/main',
-      'js/vendors', 'css/vendors',
-      'js/' + filename, 'css/' + filename
-    ]
+    chunks,
+    chunksSortMode: (a, b) => {
+      return chunks.indexOf(a.names[0]) > chunks.indexOf(b.names[0]) ? 1 : -1
+    }
   })
 })
 
@@ -66,6 +70,9 @@ if (scripts['js/vendors']) {
     })
   )
 }
+
+
+console.log(_.assign({}, styles, scripts))
 
 module.exports = {
   output: {
