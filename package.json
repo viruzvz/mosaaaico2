@@ -1,6 +1,6 @@
 {
   "name": "mosaaaico2",
-  "version": "1.8.1-alpha.3",
+  "version": "1.8.1-alpha.4",
   "description": "",
   "main": "index.js",
   "author": "Fabiano Nunes @fabianonunes",
@@ -24,6 +24,7 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "lodash": "^4.17.2",
+    "node-sass": "^3.13.0",
     "postcss-loader": "^1.1.1",
     "pug": "^2.0.0-beta6",
     "pug-loader": "^2.3.0",
