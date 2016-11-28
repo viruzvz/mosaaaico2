@@ -53,6 +53,14 @@ const plugins = [new webpack.NoErrorsPlugin()].concat(htmls)
 if (isProduction) {
   plugins.push(new ExtractTextPlugin('[name].[contenthash:5].css'))
   plugins.push(new FilterStyleStubs())
+  plugins.push(new webpack.optimize.UglifyJsPlugin({
+    output: {
+      comments: false
+    },
+    compress: {
+      warnings: false
+    }
+  }))
 
   if (utils.fileExists('./src/assets')) {
     plugins.push(new CopyWebpackPlugin([
@@ -116,7 +124,7 @@ module.exports = {
 
   plugins,
 
-  devtool: isProduction ? '' : 'eval-source-map',
+  devtool: isProduction ? '' : '#eval',
 
   devServer: {
     contentBase: './src',
