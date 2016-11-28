@@ -88,8 +88,6 @@ module.exports = {
     path: isProduction ? './dist' : void 0,
     // publicPath: isProduction ? '/' : `http://${os.hostname()}:${port}/`
     publicPath: isProduction ? '/' : `http://localhost:${port}/`
-    // hotUpdateMainFilename: '/update.json',
-    // hotUpdateChunkFilename: '/js/[id].update.js'
   },
 
   entry: _.assign({}, styles, scripts),
