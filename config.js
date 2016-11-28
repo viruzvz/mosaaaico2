@@ -13,16 +13,17 @@ const ENV = process.env.NODE_ENV || 'development'
 const port = Number(process.env.PORT) || 8000
 const isProduction = ENV === 'production'
 
-const lessLoaders = [
+const stylesLoaders = [
   'style',
   'css?sourceMap',
-  'postcss',
-  'less?sourceMap'
+  'postcss'
 ]
+const lessLoaders = stylesLoaders.concat(['less?sourceMap'])
+const sassLoaders = stylesLoaders.concat(['resolve-url', 'sass?sourceMap'])
 
 // setar todos os arquivos de estilos em src/css
-const styles = _.fromPairs(glob.sync('./src/css/*.{less,css}').map(_ => {
-  return ['css/' + path.basename(_.replace(/less$/, 'css'), '.css'), _]
+const styles = _.fromPairs(glob.sync('./src/css/*.{less,scss,css}').map(_ => {
+  return ['css/' + path.basename(_.replace(/(le|sc)ss$/, 'css'), '.css'), _]
 }))
 
 // setar todos os arquivos de scripts em src/js
@@ -95,8 +96,11 @@ module.exports = {
 
   module: {
     loaders: [{
-      test: /\.(less|css)$/,
+      test: /\.(less)$/,
       loader: isProduction ? ExtractTextPlugin.extract(lessLoaders.slice(1)) : lessLoaders.join('!')
+    }, {
+      test: /\.(scss)$/,
+      loader: isProduction ? ExtractTextPlugin.extract(sassLoaders.slice(1)) : sassLoaders.join('!')
     }, {
       test: /\.json$/,
       loader: 'json'
