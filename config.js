@@ -13,16 +13,17 @@ const ENV = process.env.NODE_ENV || 'development'
 const port = Number(process.env.PORT) || 8000
 const isProduction = ENV === 'production'
 
-const lessLoaders = [
+const stylesLoaders = [
   'style',
   'css?sourceMap',
-  'postcss',
-  'less?sourceMap'
+  'postcss'
 ]
+const lessLoaders = stylesLoaders.concat(['less?sourceMap'])
+const sassLoaders = stylesLoaders.concat(['resolve-url', 'sass?sourceMap'])
 
 // setar todos os arquivos de estilos em src/css
-const styles = _.fromPairs(glob.sync('./src/css/*.{less,css}').map(_ => {
-  return ['css/' + path.basename(_.replace(/less$/, 'css'), '.css'), _]
+const styles = _.fromPairs(glob.sync('./src/css/*.{less,scss,css}').map(_ => {
+  return ['css/' + path.basename(_.replace(/(le|sc)ss$/, 'css'), '.css'), _]
 }))
 
 // setar todos os arquivos de scripts em src/js
@@ -53,6 +54,14 @@ const plugins = [new webpack.NoErrorsPlugin()].concat(htmls)
 if (isProduction) {
   plugins.push(new ExtractTextPlugin('[name].[contenthash:5].css'))
   plugins.push(new FilterStyleStubs())
+  plugins.push(new webpack.optimize.UglifyJsPlugin({
+    output: {
+      comments: false
+    },
+    compress: {
+      warnings: false
+    }
+  }))
 
   if (utils.fileExists('./src/assets')) {
     plugins.push(new CopyWebpackPlugin([
@@ -68,27 +77,28 @@ if (scripts['js/vendors']) {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'js/vendors',
       minChunks: Infinity,
-      filename: 'js/vendors.[hash:5].js'
+      filename: isProduction ? 'js/vendors.[hash:5].js' : 'js/vendors.js'
     })
   )
 }
 
 module.exports = {
   output: {
-    filename: '[name].[hash:5].js',
+    filename: isProduction ? '[name].[hash:5].js' : '[name].js',
     path: isProduction ? './dist' : void 0,
     // publicPath: isProduction ? '/' : `http://${os.hostname()}:${port}/`
-    publicPath: isProduction ? '/' : `http://localhost:${port}/`,
-    hotUpdateMainFilename: '[hash]/update.json',
-    hotUpdateChunkFilename: '[hash]/js/[id].update.js'
+    publicPath: isProduction ? '/' : `http://localhost:${port}/`
   },
 
   entry: _.assign({}, styles, scripts),
 
   module: {
     loaders: [{
-      test: /\.(less|css)$/,
+      test: /\.(less)$/,
       loader: isProduction ? ExtractTextPlugin.extract(lessLoaders.slice(1)) : lessLoaders.join('!')
+    }, {
+      test: /\.(scss)$/,
+      loader: isProduction ? ExtractTextPlugin.extract(sassLoaders.slice(1)) : sassLoaders.join('!')
     }, {
       test: /\.json$/,
       loader: 'json'
@@ -97,7 +107,9 @@ module.exports = {
       loader: 'pug?pretty'
     }, {
       test: /\.(svg|woff|ttf|eot|woff2)(\?.*)?$/i,
-      loader: 'file?name=css/fonts/[name]_[hash:base64:5].[ext]'
+      loader: isProduction
+        ? 'file?name=css/fonts/[name]_[hash:base64:5].[ext]'
+        : 'file?name=css/fonts/[name].[ext]'
     }]
   },
 
@@ -116,7 +128,7 @@ module.exports = {
 
   plugins,
 
-  devtool: isProduction ? '' : 'eval-source-map',
+  devtool: isProduction ? '' : 'eval',
 
   devServer: {
     contentBase: './src',
