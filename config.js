@@ -128,7 +128,7 @@ module.exports = {
 
   plugins,
 
-  devtool: isProduction ? '' : '#eval',
+  devtool: isProduction ? '' : 'eval',
 
   devServer: {
     contentBase: './src',
