@@ -94,6 +94,9 @@ module.exports = {
 
   module: {
     loaders: [{
+      test: /\.(css)$/,
+      loader: isProduction ? ExtractTextPlugin.extract(stylesLoaders) : stylesLoaders.join('!')
+    }, {
       test: /\.(less)$/,
       loader: isProduction ? ExtractTextPlugin.extract(lessLoaders.slice(1)) : lessLoaders.join('!')
     }, {
