@@ -77,19 +77,19 @@ if (scripts['js/vendors']) {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'js/vendors',
       minChunks: Infinity,
-      filename: 'js/vendors.[hash:5].js'
+      filename: isProduction ? 'js/vendors.[hash:5].js' : 'js/vendors.js'
     })
   )
 }
 
 module.exports = {
   output: {
-    filename: '[name].[hash:5].js',
+    filename: isProduction ? '[name].[hash:5].js' : '[name].js',
     path: isProduction ? './dist' : void 0,
     // publicPath: isProduction ? '/' : `http://${os.hostname()}:${port}/`
-    publicPath: isProduction ? '/' : `http://localhost:${port}/`,
-    hotUpdateMainFilename: '[hash]/update.json',
-    hotUpdateChunkFilename: '[hash]/js/[id].update.js'
+    publicPath: isProduction ? '/' : `http://localhost:${port}/`
+    // hotUpdateMainFilename: '/update.json',
+    // hotUpdateChunkFilename: '/js/[id].update.js'
   },
 
   entry: _.assign({}, styles, scripts),
@@ -109,7 +109,9 @@ module.exports = {
       loader: 'pug?pretty'
     }, {
       test: /\.(svg|woff|ttf|eot|woff2)(\?.*)?$/i,
-      loader: 'file?name=css/fonts/[name]_[hash:base64:5].[ext]'
+      loader: isProduction
+        ? 'file?name=css/fonts/[name]_[hash:base64:5].[ext]'
+        : 'file?name=css/fonts/[name].[ext]'
     }]
   },
 
