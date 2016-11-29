@@ -9,10 +9,10 @@
     "build": "mosaaaico2 build"
   },
   "devDependencies": {
-    "mosaaaico2": "fabianonunes/mosaaaico2#master"
+    "mosaaaico2": "fabianonunes/mosaaaico2"
   },
   "stylelint": {
     "extends": "mosaaaico2/stylelint"
-  }  
+  }
 }
 ```
