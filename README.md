@@ -1,18 +1,7 @@
 # mosaaaico2
 
-## package.json
-```json
-{
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "mosaaaico2 dev",
-    "build": "mosaaaico2 build"
-  },
-  "devDependencies": {
-    "mosaaaico2": "fabianonunes/mosaaaico2"
-  },
-  "stylelint": {
-    "extends": "mosaaaico2/stylelint"
-  }
-}
+Para criar um novo projeto, primeiro instale o `mosaaaico2` como dependência:
+
+```bash
+yarn add fabianonunes/mosaaaico2 --dev
 ```

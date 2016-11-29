@@ -9,7 +9,8 @@
     "mosaaaico2": "./bin/build.js"
   },
   "scripts": {
-    "test": "standard"
+    "test": "standard",
+    "install": "echo 'olá'"
   },
   "dependencies": {
     "autoprefixer": "^6.5.3",
