@@ -4,6 +4,8 @@ var spawn = require('cross-spawn')
 var rimraf = require('rimraf')
 var path = require('path')
 var fs = require('fs')
+var fse = require('fs-extra')
+var glob = require('glob')
 var utils = require('../utils')
 var script = process.argv[2]
 // var isPublic = process.argv[3] === 'public'
@@ -36,6 +38,17 @@ switch (script) {
       { stdio: 'inherit' }
     )
     process.exit(result.status)
+    break
+
+  case 'init':
+    const configPaths = path.join(__dirname, '..', 'config/.*')
+    const cwd = fs.realpathSync(process.cwd())
+    glob.sync(configPaths).forEach(_ => {
+      const dest = path.join(cwd, path.basename(_))
+      fse.copySync(_, dest)
+    })
+    fse.mkdirp(path.join(cwd, 'src/css'))
+    fse.mkdirp(path.join(cwd, 'src/js'))
     break
 
   default:
