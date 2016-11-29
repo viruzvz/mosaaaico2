@@ -3,7 +3,7 @@ const glob = require('glob')
 const path = require('path')
 const _ = require('lodash')
 const utils = require('./utils')
-const FilterStyleStubs = require('./filterStyleStubs.js')
+const FilterStyleStubs = require('./plugins/filterStyleStubs.js')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
