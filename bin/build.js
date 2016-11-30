@@ -4,7 +4,10 @@ var spawn = require('cross-spawn')
 var rimraf = require('rimraf')
 var path = require('path')
 var fs = require('fs')
+var fse = require('fs-extra')
+var glob = require('glob')
 var utils = require('../utils')
+var json = require('json-update')
 var script = process.argv[2]
 // var isPublic = process.argv[3] === 'public'
 
@@ -38,9 +41,35 @@ switch (script) {
     process.exit(result.status)
     break
 
+  case 'init':
+    if (process.env.TEMPLATE !== 'true') {
+      break
+    }
+
+    const configPaths = path.join(__dirname, '..', 'config/.*')
+    if (/node_modules[/]mosaaaico2$/.test(process.cwd())) {
+      process.chdir('../..')
+    }
+    const cwd = path.resolve()
+    glob.sync(configPaths).forEach(_ => {
+      const dest = path.join(cwd, path.basename(_))
+      if (!utils.fileExists(dest)) {
+        fse.copySync(_, dest)
+      }
+    })
+    fse.mkdirp(path.join(cwd, 'src/css'))
+    fse.mkdirp(path.join(cwd, 'src/js'))
+    json.update(path.join(cwd, 'package.json'), {
+      scripts: {
+        dev: 'mosaaaico2 dev',
+        build: 'mosaaaico2 build'
+      }
+    })
+    break
+
   default:
     console.log('Unknown script "' + script + '".')
-    console.log('Perhaps you need to update react-scripts?')
+    process.exit(1)
     break
 }
 
