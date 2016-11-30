@@ -42,10 +42,15 @@ switch (script) {
 
   case 'init':
     const configPaths = path.join(__dirname, '..', 'config/.*')
-    const cwd = fs.realpathSync(process.cwd())
+    if (/node_modules[/]mosaaaico2$/.test(process.cwd())) {
+      process.chdir('../..')
+    }
+    const cwd = path.resolve()
     glob.sync(configPaths).forEach(_ => {
       const dest = path.join(cwd, path.basename(_))
-      fse.copySync(_, dest)
+      if (!utils.fileExists(dest)) {
+        fse.copySync(_, dest)
+      }
     })
     fse.mkdirp(path.join(cwd, 'src/css'))
     fse.mkdirp(path.join(cwd, 'src/js'))
@@ -53,6 +58,7 @@ switch (script) {
 
   default:
     console.log('Unknown script "' + script + '".')
+    process.exit(1)
     break
 }
 
