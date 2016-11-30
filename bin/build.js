@@ -41,6 +41,10 @@ switch (script) {
     break
 
   case 'init':
+    if (process.env.TEMPLATE !== 'true') {
+      break
+    }
+
     const configPaths = path.join(__dirname, '..', 'config/.*')
     if (/node_modules[/]mosaaaico2$/.test(process.cwd())) {
       process.chdir('../..')
