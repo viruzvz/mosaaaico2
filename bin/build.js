@@ -7,6 +7,7 @@ var fs = require('fs')
 var fse = require('fs-extra')
 var glob = require('glob')
 var utils = require('../utils')
+var json = require('json-update')
 var script = process.argv[2]
 // var isPublic = process.argv[3] === 'public'
 
@@ -58,6 +59,12 @@ switch (script) {
     })
     fse.mkdirp(path.join(cwd, 'src/css'))
     fse.mkdirp(path.join(cwd, 'src/js'))
+    json.update(path.join(cwd, 'package.json'), {
+      scripts: {
+        dev: 'mosaaaico2 dev',
+        build: 'mosaaaico2 build'
+      }
+    })
     break
 
   default:
