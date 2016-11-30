@@ -47,7 +47,8 @@ switch (script) {
     }
 
     const configPaths = path.join(__dirname, '..', 'config/.*')
-    if (/node_modules[/]mosaaaico2$/.test(process.cwd())) {
+    const pathRe = new RegExp('node_modules' + path.sep + 'mosaaaico2$')
+    if (pathRe.test(process.cwd())) {
       process.chdir('../..')
     }
     const cwd = path.resolve()
