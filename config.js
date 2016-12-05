@@ -111,8 +111,8 @@ module.exports = {
     }, {
       test: /\.(svg|woff|ttf|eot|woff2)(\?.*)?$/i,
       loader: isProduction
-        ? 'file?name=css/fonts/[name]_[hash:base64:5].[ext]'
-        : 'file?name=css/fonts/[name].[ext]'
+        ? 'file?name=fonts/[name]_[hash:base64:5].[ext]'
+        : 'file?name=fonts/[name].[ext]'
     }]
   },
 
