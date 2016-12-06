@@ -49,7 +49,8 @@ const htmls = glob.sync('./src/*.{html,pug}').map(template => {
   })
 })
 
-const plugins = [new webpack.NoErrorsPlugin()].concat(htmls)
+const plugins = [new webpack.NoErrorsPlugin()]
+// .concat(htmls)
 
 if (isProduction) {
   plugins.push(new ExtractTextPlugin('[name].[contenthash:5].css'))
@@ -136,6 +137,9 @@ module.exports = {
   devServer: {
     contentBase: './src',
     publicPath: '/',
-    port
+    port,
+    setup: function (app) {
+      require('./dev/pug-server')(app)
+    }
   }
 }
