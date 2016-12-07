@@ -25,7 +25,9 @@ module.exports = function (app) {
     if (utils.fileExists(htmlFile)) {
       res.sendFile(htmlFile, { root: utils.resolveApp('.') })
     } else if (utils.fileExists(pugFile)) {
-      var template = pug.compileFile(pugFile)
+      var template = pug.compileFile(pugFile, {
+        basedir: utils.resolveApp('./node_modules')
+      })
       res.send(template({
         require: require
       }))
