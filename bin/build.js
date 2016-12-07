@@ -27,7 +27,7 @@ switch (script) {
       ['-p', '--progress'].concat(config),
       { stdio: 'inherit' }
     )
-    rimraf.sync('./dist/css/*.js')
+    rimraf.sync('./dist/styles/*.js')
     process.exit(result.status)
     break
 
@@ -35,7 +35,7 @@ switch (script) {
     process.env.NODE_ENV = 'development'
     result = spawn.sync(
       './node_modules/webpack-dev-server/bin/webpack-dev-server.js',
-      ['--inline', '--hot', '--progress', '--colors'].concat(config),
+      ['--inline', '--progress', '--colors'].concat(config),
       { stdio: 'inherit' }
     )
     process.exit(result.status)
@@ -58,7 +58,7 @@ switch (script) {
         fse.copySync(_, dest)
       }
     })
-    fse.mkdirp(path.join(cwd, 'src/css'))
+    fse.mkdirp(path.join(cwd, 'src/styles'))
     fse.mkdirp(path.join(cwd, 'src/js'))
     json.update(path.join(cwd, 'package.json'), {
       scripts: {
