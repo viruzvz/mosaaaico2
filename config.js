@@ -23,6 +23,8 @@ const stylesLoaders = [
 const lessLoaders = stylesLoaders.concat(['less?sourceMap'])
 const sassLoaders = stylesLoaders.concat(['resolve-url', 'sass?sourceMap'])
 
+// let extractCSS = new ExtractTextPlugin('[name].css')
+
 // setar todos os arquivos de estilos em src/styles
 const styles = _.fromPairs(glob.sync('./src/styles/*.{less,scss,css}').map(_ => {
   return ['styles/' + path.basename(_.replace(/(le|sc)ss$/, 'css'), '.css'), _]
@@ -46,6 +48,7 @@ const htmls = glob.sync('./src/*.{html,pug}').map(template => {
 
 var plugins = [
   new webpack.NoErrorsPlugin()
+  // extractCSS
 ]
 
 if (isProduction) {
@@ -93,6 +96,7 @@ module.exports = {
       loader: isProduction ? ExtractTextPlugin.extract(stylesLoaders) : stylesLoaders.join('!')
     }, {
       test: /\.(less)$/,
+      // loader: extractCSS.extract(lessLoaders)
       loader: lessLoaders.join('!')
     }, {
       test: /\.(scss)$/,
@@ -127,6 +131,18 @@ module.exports = {
     contentBase: './src',
     publicPath: '/',
     port,
+    stats: {
+      context: './src',
+      timing: true,
+      reasons: false,
+      chunks: true,
+      children: true,
+      chunkModules: false,
+      assets: true,
+      cached: true,
+      source: true,
+      chunkOrigins: true
+    },
     setup: function (app) {
       require('./dev/pug-server')(app)
     }
