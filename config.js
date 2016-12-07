@@ -14,7 +14,9 @@ const port = Number(process.env.PORT) || 8000
 const isProduction = ENV === 'production'
 
 const stylesLoaders = [
-  'style',
+  'file?name=css/[name].css',
+  'extract',
+  // 'style',
   'css?sourceMap',
   'postcss'
 ]
@@ -34,26 +36,20 @@ const scripts = _.fromPairs(glob.sync('./src/js/*.js').map(_ => {
 // setar todos os htmls de estilos em src
 const htmls = glob.sync('./src/*.{html,pug}').map(template => {
   const filename = path.basename(template).replace(/\.(html|pug)$/, '')
-  const chunks = [
-    'js/vendors', 'css/vendors',
-    'js/main', 'css/main',
-    'js/' + filename, 'css/' + filename
-  ]
   return new HtmlWebpackPlugin({
     template: template,
     filename: filename + '.html',
-    chunks,
-    chunksSortMode: (a, b) => {
-      return chunks.indexOf(a.names[0]) > chunks.indexOf(b.names[0]) ? 1 : -1
-    }
+    inject: false,
+    chunks: []
   })
 })
 
-const plugins = [new webpack.NoErrorsPlugin()]
-// .concat(htmls)
+var plugins = [
+  new webpack.NoErrorsPlugin()
+]
 
 if (isProduction) {
-  plugins.push(new ExtractTextPlugin('[name].[contenthash:5].css'))
+  plugins = plugins.concat(htmls)
   plugins.push(new FilterStyleStubs())
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     output: {
@@ -69,8 +65,6 @@ if (isProduction) {
       { from: './src/assets', to: 'assets' }
     ]))
   }
-} else {
-  // plugins.push(new webpack.NamedModulesPlugin())
 }
 
 if (scripts['js/vendors']) {
@@ -78,14 +72,14 @@ if (scripts['js/vendors']) {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'js/vendors',
       minChunks: Infinity,
-      filename: isProduction ? 'js/vendors.[hash:5].js' : 'js/vendors.js'
+      filename: 'js/vendors.js'
     })
   )
 }
 
 module.exports = {
   output: {
-    filename: isProduction ? '[name].[hash:5].js' : '[name].js',
+    filename: '[name].js',
     path: isProduction ? './dist' : void 0,
     // publicPath: isProduction ? '/' : `http://${os.hostname()}:${port}/`
     publicPath: isProduction ? '/' : `http://localhost:${port}/`
@@ -99,10 +93,10 @@ module.exports = {
       loader: isProduction ? ExtractTextPlugin.extract(stylesLoaders) : stylesLoaders.join('!')
     }, {
       test: /\.(less)$/,
-      loader: isProduction ? ExtractTextPlugin.extract(lessLoaders.slice(1)) : lessLoaders.join('!')
+      loader: lessLoaders.join('!')
     }, {
       test: /\.(scss)$/,
-      loader: isProduction ? ExtractTextPlugin.extract(sassLoaders.slice(1)) : sassLoaders.join('!')
+      loader: sassLoaders.join('!')
     }, {
       test: /\.json$/,
       loader: 'json'
@@ -112,8 +106,8 @@ module.exports = {
     }, {
       test: /\.(svg|woff|ttf|eot|woff2)(\?.*)?$/i,
       loader: isProduction
-        ? 'file?name=css/fonts/[name]_[hash:base64:5].[ext]'
-        : 'file?name=css/fonts/[name].[ext]'
+        ? 'file?name=fonts/[name]_[hash:5].[ext]'
+        : 'file?name=fonts/[name].[ext]'
     }]
   },
 
@@ -124,11 +118,6 @@ module.exports = {
       })
     ]
   },
-
-  // ainda não é possível importar .less direito pelo mainField
-  // resolve: {
-  //   mainFields: ['less', 'main']
-  // },
 
   plugins,
 
