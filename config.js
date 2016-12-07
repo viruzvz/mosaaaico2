@@ -102,7 +102,7 @@ module.exports = {
       loader: 'json'
     }, {
       test: /\.(pug|jade)$/,
-      loader: 'pug?pretty'
+      loader: 'pug?pretty&root=' + utils.resolveApp('./node_modules')
     }, {
       test: /\.(svg|woff|ttf|eot|woff2)(\?.*)?$/i,
       loader: isProduction
