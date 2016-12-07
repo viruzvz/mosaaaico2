@@ -14,7 +14,7 @@ const port = Number(process.env.PORT) || 8000
 const isProduction = ENV === 'production'
 
 const stylesLoaders = [
-  'file?name=css/[name].css',
+  'file?name=styles/[name].css',
   'extract',
   // 'style',
   'css?sourceMap',
@@ -23,9 +23,9 @@ const stylesLoaders = [
 const lessLoaders = stylesLoaders.concat(['less?sourceMap'])
 const sassLoaders = stylesLoaders.concat(['resolve-url', 'sass?sourceMap'])
 
-// setar todos os arquivos de estilos em src/css
-const styles = _.fromPairs(glob.sync('./src/css/*.{less,scss,css}').map(_ => {
-  return ['css/' + path.basename(_.replace(/(le|sc)ss$/, 'css'), '.css'), _]
+// setar todos os arquivos de estilos em src/styles
+const styles = _.fromPairs(glob.sync('./src/styles/*.{less,scss,css}').map(_ => {
+  return ['styles/' + path.basename(_.replace(/(le|sc)ss$/, 'css'), '.css'), _]
 }))
 
 // setar todos os arquivos de scripts em src/js

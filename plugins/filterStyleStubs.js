@@ -1,6 +1,6 @@
 function FilterStyleStubs () { }
 
-const mask = /^[/]css[/].*[.]js$/
+const mask = /^[/]styles[/].*[.]js$/
 
 FilterStyleStubs.prototype.apply = function (compiler) {
   compiler.plugin('compilation', function (compilation) {
