@@ -29,9 +29,9 @@ Todo arquivo `[nome].html` ou `[nome].pug` na pasta `src` será publicado na rai
 Nas entradas que produzam HTML serão injetadas automaticamente as referências `link:href` e `script:src` para os seguintes arquivos (caso existam):
 
 * folhas de estilos (css, less ou scss):
-  * `src/css/vendors.css`
-  * `src/css/main.css`
-  * `src/css/[nome].css`
+  * `src/styles/vendors.css`
+  * `src/styles/main.css`
+  * `src/styles/[nome].css`
 * scripts:
   * `src/js/vendors.js`
   * `src/js/main.js`
