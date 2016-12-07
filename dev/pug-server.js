@@ -1,7 +1,7 @@
 var pug = require('pug')
 var sanitize = require('sanitize-filename')
-var fs = require('fs')
 var express = require('express')
+var utils = require('../utils')
 
 module.exports = function (app) {
   app.use('/~', express.static('./node_modules'))
@@ -11,6 +11,10 @@ module.exports = function (app) {
     next()
   })
 
+  app.get(/[.](le|sc)ss$/, function (req, res, next) {
+    res.redirect(req.url.replace(/(le|sc)ss$/, 'css'))
+  })
+
   app.get('/:page.html', function (req, res) {
     res.set('Content-Type', 'text/html')
 
@@ -18,9 +22,9 @@ module.exports = function (app) {
     var htmlFile = `./src/${filename}.html`
     var pugFile = `./src/${filename}.pug`
 
-    if (fileExists(htmlFile)) {
-      res.sendFile(htmlFile)
-    } else if (fileExists(pugFile)) {
+    if (utils.fileExists(htmlFile)) {
+      res.sendFile(htmlFile, { root: utils.resolveApp('.') })
+    } else if (utils.fileExists(pugFile)) {
       var template = pug.compileFile(pugFile)
       res.send(template({
         require: require
@@ -29,13 +33,4 @@ module.exports = function (app) {
       res.status(404).send(`Nem ${htmlFile} nem ${pugFile} foram encontrados...`)
     }
   })
-}
-
-var fileExists = function (filepath) {
-  try {
-    fs.accessSync(filepath, fs.constants.F_OK)
-    return true
-  } catch (e) {
-    return false
-  }
 }
