@@ -127,6 +127,10 @@ module.exports = {
     contentBase: './src',
     publicPath: '/',
     port,
+    stats: {
+      timings: true,
+      chunkModules: false
+    },
     setup: function (app) {
       require('./dev/pug-server')(app)
     }
