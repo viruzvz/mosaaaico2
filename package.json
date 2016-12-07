@@ -18,7 +18,7 @@
     "cross-spawn": "^5.0.1",
     "css-loader": "0.14.5",
     "express": "^4.14.0",
-    "extract-loader": "^0.1.0",
+    "extract-loader": "fabianonunes/extract-loader",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "fs-extra": "^1.0.0",
