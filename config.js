@@ -33,11 +33,9 @@ const scripts = _.fromPairs(glob.sync('./src/js/*.js').map(_ => {
   return ['js/' + path.basename(_, '.js'), _]
 }))
 
-const pages = _.fromPairs(glob.sync('./src/pages/*.{pug,html}').map(_ => {
-  return [path.basename(_.replace(/pug$/, 'html'), '.html'), _]
-}))
-
-console.log(pages)
+// const pages = _.fromPairs(glob.sync('./src/pages/*.{pug,html}').map(_ => {
+//   return [path.basename(_.replace(/pug$/, 'html'), '.html'), _]
+// }))
 
 // setar todos os htmls de estilos em src
 const htmls = glob.sync('./src/*.{html,pug}').map(template => {
