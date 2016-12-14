@@ -13,7 +13,7 @@
     "postinstall": "node ./bin/build.js init"
   },
   "dependencies": {
-    "autoprefixer": "^6.5.3",
+    "autoprefixer": "^6.5.4",
     "copy-webpack-plugin": "^4.0.1",
     "cross-spawn": "^5.0.1",
     "css-loader": "0.14.5",
@@ -29,12 +29,12 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "lodash": "^4.17.2",
-    "node-sass": "^3.13.0",
-    "postcss-loader": "^1.1.1",
+    "node-sass": "^4.0.0",
+    "postcss-loader": "^1.2.1",
     "pug": "^2.0.0-beta6",
     "pug-html-loader": "^1.0.9",
     "pug-loader": "^2.3.0",
-    "resolve-url-loader": "^1.6.0",
+    "resolve-url-loader": "^1.6.1",
     "rimraf": "^2.5.4",
     "sanitize-filename": "^1.6.1",
     "sass-loader": "^4.0.2",
@@ -42,7 +42,7 @@
     "style-loader": "^0.13.1",
     "stylelint": "^7.6.0",
     "stylelint-config-standard": "^15.0.0",
-    "webpack": "^1.13.3",
+    "webpack": "^1.14.0",
     "webpack-config": "^6.2.1",
     "webpack-dev-server": "^1.16.2"
   }
