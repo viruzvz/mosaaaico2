@@ -22,7 +22,7 @@
     "css-loader": "0.14.5",
     "express": "^4.14.0",
     "extract-loader": "fabianonunes/extract-loader#built",
-    "extract-text-webpack-plugin": "^1.0.1",
+    "extract-text-webpack-plugin": "2.0.0-beta.4",
     "file-loader": "^0.9.0",
     "fs-extra": "^1.0.0",
     "glob": "^7.1.1",
@@ -35,18 +35,17 @@
     "node-sass": "^4.0.0",
     "postcss-loader": "^1.2.1",
     "pug": "^2.0.0-beta6",
-    "pug-html-loader": "^1.0.9",
     "pug-loader": "^2.3.0",
     "resolve-url-loader": "^1.6.1",
     "rimraf": "^2.5.4",
     "sanitize-filename": "^1.6.1",
-    "sass-loader": "^4.0.2",
+    "sass-loader": "^4.1.0",
     "standard": "^8.6.0",
     "style-loader": "^0.13.1",
     "stylelint": "^7.6.0",
     "stylelint-config-standard": "^15.0.0",
-    "webpack": "^1.14.0",
+    "webpack": "beta",
     "webpack-config": "^6.2.1",
-    "webpack-dev-server": "^1.16.2"
+    "webpack-dev-server": "beta"
   }
 }
