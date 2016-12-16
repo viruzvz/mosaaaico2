@@ -73,4 +73,3 @@ switch (script) {
     process.exit(1)
     break
 }
-
