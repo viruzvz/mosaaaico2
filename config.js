@@ -14,14 +14,19 @@ const port = Number(process.env.PORT) || 8000
 const isProduction = ENV === 'production'
 
 const stylesLoaders = [
-  'file?name=styles/[name].css',
-  'extract',
-  // 'style',
-  'css?sourceMap',
-  'postcss'
+  // { loader: 'file-loader?name=styles/[name].css' },
+  { loader: ExtractTextPlugin.extract({ loader: 'css-loader' }) },
+  // { loader: 'extract-loader' },
+  // { loader: 'css-loader?sourceMap' },
+  { loader: 'postcss-loader' }
 ]
-const lessLoaders = stylesLoaders.concat(['less?sourceMap'])
-const sassLoaders = stylesLoaders.concat(['resolve-url', 'sass?sourceMap'])
+const lessLoaders = stylesLoaders.concat([
+  { loader: 'less-loader?sourceMap' }
+])
+const sassLoaders = stylesLoaders.concat([
+  { loader: 'resolve-url-loader' },
+  { loader: 'sass-loader?sourceMap' }
+])
 
 // setar todos os arquivos de estilos em src/styles
 const styles = _.fromPairs(glob.sync('./src/styles/*.{less,scss,css}').map(_ => {
@@ -49,7 +54,8 @@ const htmls = glob.sync('./src/*.{html,pug}').map(template => {
 })
 
 var plugins = [
-  new webpack.NoErrorsPlugin()
+  new webpack.NoErrorsPlugin(),
+  new ExtractTextPlugin({ filename: '[name].css' })
 ]
 
 if (isProduction) {
@@ -92,36 +98,40 @@ module.exports = {
   entry: _.assign({}, styles, scripts),
 
   module: {
-    loaders: [{
+    rules: [{
       test: /\.(css)$/,
-      loader: isProduction ? ExtractTextPlugin.extract(stylesLoaders) : stylesLoaders.join('!')
+      use: stylesLoaders.join('!')
     }, {
       test: /\.(less)$/,
-      loader: lessLoaders.join('!')
+      use: lessLoaders
     }, {
       test: /\.(scss)$/,
-      loader: sassLoaders.join('!')
+      use: sassLoaders.join('!')
     }, {
       test: /\.json$/,
-      loader: 'json'
+      loader: 'json-loader'
     }, {
       test: /\.(pug|jade)$/,
-      loader: 'pug?pretty&root=' + utils.resolveApp('./node_modules')
+      loader: 'pug-loader',
+      options: {
+        pretty: true,
+        root: utils.resolveApp('./node_modules')
+      }
     }, {
       test: /\.(svg|woff|ttf|eot|woff2)(\?.*)?$/i,
       loader: isProduction
-        ? 'file?name=fonts/[name]_[hash:5].[ext]'
-        : 'file?name=fonts/[name].[ext]'
+        ? 'file-loader?name=fonts/[name]_[hash:5].[ext]'
+        : 'file-loader?name=fonts/[name].[ext]'
     }]
   },
 
-  postcss: function (ctx) {
-    return [
-      require('autoprefixer')({
-        browsers: ['last 3 version', 'ie >= 10']
-      })
-    ]
-  },
+  // postcss: function (ctx) {
+  //   return [
+  //     require('autoprefixer')({
+  //       browsers: ['last 3 version', 'ie >= 10']
+  //     })
+  //   ]
+  // },
 
   plugins,
 
