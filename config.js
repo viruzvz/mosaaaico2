@@ -6,7 +6,6 @@ const utils = require('./utils')
 const FilterStyleStubs = require('./plugins/filterStyleStubs.js')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -16,7 +15,6 @@ const isProduction = ENV === 'production'
 const stylesLoaders = [
   'file?name=styles/[name].css',
   'extract',
-  // 'style',
   'css?sourceMap',
   'postcss'
 ]
@@ -94,7 +92,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.(css)$/,
-      loader: isProduction ? ExtractTextPlugin.extract(stylesLoaders) : stylesLoaders.join('!')
+      loader: stylesLoaders.join('!')
     }, {
       test: /\.(less)$/,
       loader: lessLoaders.join('!')
