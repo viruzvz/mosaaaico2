@@ -14,10 +14,10 @@ const port = Number(process.env.PORT) || 8000
 const isProduction = ENV === 'production'
 
 const stylesLoaders = [
-  // { loader: 'file-loader?name=styles/[name].css' },
-  { loader: ExtractTextPlugin.extract({ loader: 'css-loader' }) },
-  // { loader: 'extract-loader' },
-  // { loader: 'css-loader?sourceMap' },
+  { loader: 'file-loader?name=styles/[name].css' },
+  // { loader: ExtractTextPlugin.extract({ loader: 'css-loader' }) },
+  { loader: 'extract-loader' },
+  { loader: 'css-loader?sourceMap' },
   { loader: 'postcss-loader' }
 ]
 const lessLoaders = stylesLoaders.concat([
@@ -54,12 +54,12 @@ const htmls = glob.sync('./src/*.{html,pug}').map(template => {
 })
 
 var plugins = [
-  new webpack.NoErrorsPlugin(),
-  new ExtractTextPlugin({ filename: '[name].css' })
+  new webpack.NoErrorsPlugin()
+  // new ExtractTextPlugin({ filename: '[name].css' })
 ]
 
 if (isProduction) {
-  plugins = plugins.concat(htmls)
+  // plugins = plugins.concat(htmls)
   plugins.push(new FilterStyleStubs())
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     output: {
@@ -100,13 +100,13 @@ module.exports = {
   module: {
     rules: [{
       test: /\.(css)$/,
-      use: stylesLoaders.join('!')
+      use: stylesLoaders
     }, {
       test: /\.(less)$/,
       use: lessLoaders
     }, {
       test: /\.(scss)$/,
-      use: sassLoaders.join('!')
+      use: sassLoaders
     }, {
       test: /\.json$/,
       loader: 'json-loader'
