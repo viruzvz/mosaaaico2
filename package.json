@@ -12,8 +12,8 @@
     "test": "standard",
     "postinstall": "node ./bin/build.js init"
   },
-  "engines" : {
-    "node" : "^7.0.0"
+  "engines": {
+    "node": "^7.0.0"
   },
   "dependencies": {
     "autoprefixer": "^6.5.4",
