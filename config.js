@@ -6,7 +6,6 @@ const utils = require('./utils')
 const FilterStyleStubs = require('./plugins/filterStyleStubs.js')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -16,7 +15,6 @@ const isProduction = ENV === 'production'
 const stylesLoaders = [
   'file?name=styles/[name].css',
   'extract',
-  // 'style',
   'css?sourceMap',
   'postcss'
 ]
@@ -32,6 +30,10 @@ const styles = _.fromPairs(glob.sync('./src/styles/*.{less,scss,css}').map(_ => 
 const scripts = _.fromPairs(glob.sync('./src/js/*.js').map(_ => {
   return ['js/' + path.basename(_, '.js'), _]
 }))
+
+// const pages = _.fromPairs(glob.sync('./src/pages/*.{pug,html}').map(_ => {
+//   return [path.basename(_.replace(/pug$/, 'html'), '.html'), _]
+// }))
 
 // setar todos os htmls de estilos em src
 const htmls = glob.sync('./src/*.{html,pug}').map(template => {
@@ -51,15 +53,6 @@ var plugins = [
 if (isProduction) {
   plugins = plugins.concat(htmls)
   plugins.push(new FilterStyleStubs())
-  plugins.push(new webpack.optimize.UglifyJsPlugin({
-    output: {
-      comments: false
-    },
-    compress: {
-      warnings: false
-    }
-  }))
-
   if (utils.fileExists('./src/assets')) {
     plugins.push(new CopyWebpackPlugin([
       { from: './src/assets', to: 'assets' }
@@ -90,7 +83,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.(css)$/,
-      loader: isProduction ? ExtractTextPlugin.extract(stylesLoaders) : stylesLoaders.join('!')
+      loader: stylesLoaders.join('!')
     }, {
       test: /\.(less)$/,
       loader: lessLoaders.join('!')
@@ -129,7 +122,8 @@ module.exports = {
     port,
     stats: {
       timings: true,
-      chunkModules: false
+      chunkModules: false,
+      chunks: false
     },
     setup: function (app) {
       require('./dev/pug-server')(app)
